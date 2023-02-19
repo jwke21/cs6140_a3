@@ -1,7 +1,8 @@
-'''
+"""
 CS6140 Project 3
 Yihan Xu
 Jake Van Meter
+<<<<<<< Updated upstream
 '''
 
 from utils import *
@@ -9,7 +10,48 @@ from regression import *
 from consts import *
 from pca import *
 import heapq as hq
+=======
+"""
+from utils import *
+from regression import *
+from consts import *
+from pca import *
+import heapq as hq
+import matplotlib as mpl
+import matplotlib.pyplot as plt
 
+mpl.use('TkAgg')
+
+RAW_CSV_PATH = "./data/heart.csv"
+TRN_CSV_PATH = "./data/heart_train_718.csv"
+TST_CSV_PATH = "./data/heart_test_200.csv"
+FRMT_RAW_CSV_PATH = "./data/formatted_heart.csv"
+FRMT_TRN_CSV_PATH = "./data/formatted_heart_train_718.csv"
+FRMT_TST_CSV_PATH = "./data/formatted_heart_test_200.csv"
+
+IND_FEATURES = [
+    "Age",  # Numeric
+    "Sex",  # Categorical: [F=1, M=0]
+    ["ATA", "NAP", "TA"],
+    # (orig='ChestPainType') Categorical: [ATA=(1, 0, 0), NAP=(0, 1, 0), TA=(0, 0, 1), ASY=(0, 0, 0)]
+    "RestingBP",  # Numeric
+    "Cholesterol",  # Numeric
+    "FastingBS",  # Categorical: [Y=1, N=0]
+    ["Normal", "ST"],  # (orig='RestingECG') Categorical: [Normal=(1, 0), ST=(0, 1), LVH=(0, 0)]
+    "MaxHR",  # Numeric
+    "ExerciseAngina",  # Categorical: [Y=1, N=0]
+    "Oldpeak",  # Numeric
+    ["Flat", "Up"],  # (orig='ST_Slope') Categorical: [Flat=(1, 0), Up=(0, 1), Down=(0, 0)]
+]
+
+DEP_FEATURE = "HeartDisease"  # Categorical: [Y=1, N=0]
+
+
+def print_pairs(data: pd.DataFrame) -> None:
+    data = pd.DataFrame(data)
+    Y = data.iloc[:, 1]
+    pd.plotting.scatter_matrix(data, c=Y, figsize=(50, 50), marker='o')
+    plt.savefig('images/scatter_matrix.png')
 
 def main():
     raw_df = open_csv_as_df(RAW_CSV_PATH)
@@ -62,6 +104,10 @@ def main():
     # raw_df.to_csv(FRMT_RAW_CSV_PATH, index=False)
     # trn_df.to_csv(FRMT_TRN_CSV_PATH, index=False)
     # tst_df.to_csv(FRMT_TST_CSV_PATH, index=False)
+
+    # print pairs
+    print_pairs(tst_df)
+
 
 if __name__ == "__main__":
     main()
