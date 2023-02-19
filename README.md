@@ -21,6 +21,12 @@ Jake:
 - [ ] PCA
 - [ ] Linear Regression
 
+Top scoring independent features:
+1) ChestPainType
+2) ST_Slope
+3) ExerciseAngina
+4) MaxHR
+
 ### Part 2
 
 Yihan:
