@@ -25,6 +25,14 @@ IND_FEATURES = [
     "ST_Slope"          # Categorical
 ]
 
+NUMERIC_IND_FEATURES = [
+    "Age",
+    "RestingBP",
+    "Cholesterol",
+    "MaxHR",
+    "Oldpeak",
+]
+
 DUMMY_IND_FEATURES = [
     ["Age"],                # Numeric
     ["Sex"],                # Categorical: [F=1, M=0]

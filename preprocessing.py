@@ -44,7 +44,7 @@ def main():
         print_linear_reg_model_metrics(model, X_train[feat], y_train, X_test[feat], y_test)
 
     # Get the top N scoring features
-    N = 4
+    N = 5
     top_features = []
     for _ in range(N):
         _, feat = hq.heappop(by_score_heap)
@@ -56,7 +56,7 @@ def main():
     print_linear_reg_model_metrics(model, X_train[top_features], y_train, X_test[top_features], y_test)
 
     # Conduct PCA on the dataset
-    means, stds, eigvals, eigvecs, projected_data = pca(X_train, normalize=True, print_results=True)
+    means, stds, eigvals, eigvecs, projected_data = pca(X_train[NUMERIC_IND_FEATURES], normalize=True, print_results=True)
 
     # Write formatted data frames to new CSVs
     # raw_df.to_csv(FRMT_RAW_CSV_PATH, index=False)
