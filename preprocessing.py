@@ -31,27 +31,27 @@ def main():
     by_score_heap = []
 
     # Conduct linear regression on each of the individual features
-    for i, feat in enumerate(DUMMY_IND_FEATURES):
-        model = linear_regression(X_train[feat], y_train)
-        r2_score = model.score(X_test[feat], y_test)
-        # Push model's score and associated feature onto the heap
-        hq.heappush(by_score_heap, (-r2_score, feat))  # Python's heap is a min heap
-        print_linear_reg_model_metrics(model, X_train[feat], y_train, X_test[feat], y_test)
+    # for i, feat in enumerate(DUMMY_IND_FEATURES):
+    #     model = linear_regression(X_train[feat], y_train)
+    #     r2_score = model.score(X_test[feat], y_test)
+    #     # Push model's score and associated feature onto the heap
+    #     hq.heappush(by_score_heap, (-r2_score, feat))  # Python's heap is a min heap
+    #     print_linear_reg_model_metrics(model, X_train[feat], y_train, X_test[feat], y_test)
 
     # Get the top N scoring features
-    N = 4
-    top_features = []
-    for _ in range(N):
-        _, feat = hq.heappop(by_score_heap)
-        top_features += feat
+    # N = 4
+    # top_features = []
+    # for _ in range(N):
+    #     _, feat = hq.heappop(by_score_heap)
+    #     top_features += feat
 
     # Build a linear model out of the top N scoring features
-    model = linear_regression(X_train[top_features], y_train)
+    # model = linear_regression(X_train[top_features], y_train)
     # Print the model's metrics
-    print_linear_reg_model_metrics(model, X_train[top_features], y_train, X_test[top_features], y_test)
+    # print_linear_reg_model_metrics(model, X_train[top_features], y_train, X_test[top_features], y_test)
 
     # Conduct PCA on the numeric independent features of the data set
-    means, stds, eigvals, eigvecs, projected_data = pca(X_train[NUMERIC_IND_FEATURES], normalize=True, print_results=True)
+    # means, stds, eigvals, eigvecs, projected_data = pca(X_train[NUMERIC_IND_FEATURES], normalize=True, print_results=True)
 
     # Write formatted data frames to new CSVs
     # raw_df.to_csv(FRMT_RAW_CSV_PATH, index=False)
