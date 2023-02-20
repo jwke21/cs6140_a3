@@ -1,8 +1,8 @@
-'''
+"""
 CS6140 Project 3
 Yihan Xu
 Jake Van Meter
-'''
+"""
 import pandas as pd
 import numpy as np
 from typing import *
@@ -11,6 +11,7 @@ from typing import *
 def open_csv_as_df(path: str) -> pd.DataFrame:
     print(f"fetching csv from {path}")
     return pd.read_csv(path)
+
 
 def format_df_columns(df: pd.DataFrame) -> pd.DataFrame:
     ret = pd.DataFrame()
