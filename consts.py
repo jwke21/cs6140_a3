@@ -1,8 +1,8 @@
-'''
+"""
 CS6140 Project 3
 Yihan Xu
 Jake Van Meter
-'''
+"""
 
 RAW_CSV_PATH = "./data/heart.csv"
 TRN_CSV_PATH = "./data/heart_train_718.csv"

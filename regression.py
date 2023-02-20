@@ -1,8 +1,9 @@
-'''
+"""
 CS6140 Project 3
 Yihan Xu
 Jake Van Meter
-'''
+"""
+
 import numpy as np
 import pandas as pd
 from sklearn import linear_model as lm

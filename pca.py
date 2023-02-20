@@ -1,8 +1,9 @@
-'''
+"""
 CS6140 Project 3
 Yihan Xu
 Jake Van Meter
-'''
+"""
+
 import pandas as pd
 import numpy as np
 from typing import *
