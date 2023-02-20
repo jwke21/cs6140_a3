@@ -70,15 +70,11 @@ def k_means(data: pd.DataFrame, k: int, if_plot: bool = True, col_1: str = '', c
 # Cluster features in pairs
 def cluster_pairs(data: pd.DataFrame, col_1: str, col_2: str) -> None:
     new_df = data.loc[:, [col_1, col_2]]
-    print("new_df: ")
-    print(new_df)
-    plt.scatter(new_df.iloc[:, 0], new_df.iloc[:, 1])
-    plt.show()
-    # k = 6
-    # representation_error = k_means(new_df, k, True, col_1, col_2)
-    # minimum_description_length = calculate_minimum_description_length(k, 2, representation_error)
-    # print(f"representation error for {col_1} and {col_2} is {representation_error}")
-    # print(f"minimum description length for {col_1} and {col_2} is {minimum_description_length}")
+    k = 6
+    representation_error = k_means(new_df, k, True, col_1, col_2)
+    minimum_description_length = calculate_minimum_description_length(k, 2, representation_error)
+    print(f"representation error for {col_1} and {col_2} is {representation_error}")
+    print(f"minimum description length for {col_1} and {col_2} is {minimum_description_length}")
 
 
 def cluster_features(data: pd.DataFrame) -> None:
@@ -97,6 +93,7 @@ def cluster_features(data: pd.DataFrame) -> None:
     plt.savefig('images/MDL.png')
     plt.plot(k_values, representation_errors)
     plt.savefig('images/representation_error.png')
+    plt.show()
 
     # Cluster features in pairs
     # From what we found from the plotting, we decide only to cluster the ones worth clustering

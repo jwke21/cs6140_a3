@@ -59,7 +59,7 @@ def main():
     # tst_df.to_csv(FRMT_TST_CSV_PATH, index=False)
 
     # print pairs
-    plot_pairs(tst_df)
+    # plot_pairs(tst_df)
     cluster_features(tst_df)
 
 
