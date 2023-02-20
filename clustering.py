@@ -8,6 +8,7 @@ import math
 import matplotlib as mpl
 import matplotlib.pyplot as plt
 import pandas as pd
+import numpy as np
 from sklearn.cluster import KMeans
 
 
