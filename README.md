@@ -65,13 +65,13 @@ Jake:
 ## task 1
 ### visualize data
 
-- [ ] heatmap
-- [ ] scatter matrix original dataset
+- [ ] heatmap -yihan
+- [ ] scatter matrix original dataset -yihan
 
 ### pre-processing the data
-- [ ] convert categorical to numeric
-- [ ] whitening
-- [ ] boxplot of features
-- [ ] pca to reduce dimension to 90%, find relations and significance of variables
-- [ ] lasso regression on all features to find significant features
-- [ ] linear/polynomial regression to test different variations of variables
+- [ ] convert categorical to numeric -Jake
+- [ ] whitening -yihan
+- [ ] boxplot of features -yihan
+- [ ] pca, find relations and significance of variables -Jake
+- [ ] lasso regression on all features to find significant features -yihan
+- [ ] linear/polynomial regression to test different variations of variables -Jake
