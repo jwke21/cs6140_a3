@@ -67,6 +67,7 @@ Jake:
 
 - [ ] heatmap
 - [ ] scatter matrix original dataset
+- [ ] boxplot of features
 
 ### pre-processing the data
 - [ ] convert categorical to numeric
