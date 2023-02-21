@@ -7,7 +7,7 @@ Jake Van Meter
 from utils import *
 from regression import *
 from consts import *
-# from pca import *
+from pca import *
 from sklearn.ensemble import RandomForestClassifier
 import matplotlib as mpl
 import matplotlib.pyplot as plt
@@ -169,7 +169,7 @@ def main():
     transformed_data_test = pd.concat([X_test[CATEGORICAL_IND_FEATURES], transformed_numeric_data_test], axis=1)
     print_linear_reg_model_metrics(model, transformed_data_train, y_train, transformed_data_test, y_test)
 
-    ### Try regression with power transformations of 1/2 (i.e. taking sqrt of input) ###
+    ### Try regression with square root of input ###
     print("\n--------------------REGRESSION WITH SQUARE ROOT TRANSFORMATIONS ON ALL FEATURES--------------------\n")
     models = sqrt_regression(X_train, y_train)
     top_transformation = top_scoring_sqrt_model(models, X_test[DUMMY_IND_FEATURES_NONLIST], y_test)
@@ -200,7 +200,7 @@ def main():
         print(f"\nBest transformation for feature '{feat}' (i.e. 'non-transformed' vs. 'cosine'): {top_transformation}\n")
 
     # Conduct PCA on the numeric independent features of the data set
-    # means, stds, eigvals, eigvecs, projected_data = pca(X_train[NUMERIC_IND_FEATURES], normalize=True, print_results=True)
+    means, stds, eigvals, eigvecs, projected_data = pca(X_train[NUMERIC_IND_FEATURES], normalize=False, print_results=True)
 
     # Write formatted data frames to new CSVs
     # raw_df.to_csv(FRMT_RAW_CSV_PATH, index=False)

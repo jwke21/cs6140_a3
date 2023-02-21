@@ -72,8 +72,9 @@ def sqrt_regression(X_train: pd.DataFrame | pd.Series, y_train: pd.Series) -> Li
     model = lm.LinearRegression().fit(X=X_train, y=y_train)
     models.append(model)
     # Build model on square rooted data
-    X_train[X_train < 0] = 0 # Replace negative numbers with 0 so no NaN values are produced from sqrt operation
-    transformed_data = np.sqrt(X_train)
+    transformed_data = X_train.copy()
+    transformed_data[transformed_data < 0] = 0 # Replace negative numbers with 0 so no NaN values are produced from sqrt operation
+    transformed_data = np.sqrt(transformed_data)
     # Create and train the linear model on training data
     model = lm.LinearRegression().fit(X=transformed_data, y=y_train)
     models.append(model)
@@ -88,8 +89,9 @@ def top_scoring_sqrt_model(models: List[lm.LinearRegression],
     # Get the r2 score of non-transformed input model
     non_transformed_score = models[0].score(X_test, y_test)
     # Get the r2 score of the transformed input model
-    X_test[X_test < 0] = 0 # Replace negative numbers with 0 so no NaN values are produced from sqrt operation
-    transformed_data = np.sqrt(X_test)
+    transformed_data = X_test.copy()
+    transformed_data[transformed_data < 0] = 0 # Replace negative numbers with 0 so no NaN values are produced from sqrt operation
+    transformed_data = np.sqrt(transformed_data)
     transformed_score = models[1].score(transformed_data, y_test)
     print(f"R squared score for non-transformed input: {non_transformed_score}")
     print(f"R squared score for transformed input: {transformed_score}")
