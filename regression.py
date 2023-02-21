@@ -7,6 +7,8 @@ from __future__ import annotations
 
 import numpy as np
 import pandas as pd
+from sklearn.feature_selection import SelectFromModel
+from sklearn.linear_model import LogisticRegression
 from sklearn import linear_model as lm
 from typing import *
 
@@ -19,6 +21,12 @@ def linear_regression(X_train: pd.DataFrame | pd.Series, y_train: pd.Series) -> 
     # Create and train the linear model on training data
     linear_model = lm.LinearRegression().fit(X=X_train, y=y_train)
     return linear_model
+
+
+def logistic_regression_with_lasso(X_train: pd.DataFrame, y_train: pd.Series) -> lm.LinearRegression:
+    sel_ = LogisticRegression(C=0.5, penalty='l1', solver='liblinear', random_state=10)
+    sel_.fit(X_train, y_train)
+    return sel_
 
 
 def print_linear_reg_model_metrics(model: lm.LinearRegression, X_train: pd.DataFrame | pd.Series,

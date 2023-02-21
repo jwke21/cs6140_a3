@@ -8,6 +8,7 @@ from utils import *
 from regression import *
 from consts import *
 # from pca import *
+from sklearn.ensemble import RandomForestClassifier
 import matplotlib as mpl
 import matplotlib.pyplot as plt
 import seaborn as sns
@@ -21,9 +22,8 @@ mpl.use('TkAgg')
 def plot_scatter_matrix(data: pd.DataFrame) -> None:
     data = pd.DataFrame(data)
     Y = data.iloc[:, 1]
-    pd.plotting.scatter_matrix(data, figsize=(35, 35), marker='o')
-    plt.figure()
     plt.title('Scatter matrix of All Independent Features')
+    pd.plotting.scatter_matrix(data, figsize=(35, 35), marker='o')
     plt.savefig('images/scatter_matrix.png')
 
 
@@ -37,6 +37,7 @@ def plot_heatmap(data: pd.DataFrame) -> None:
     plt.show()
 
 
+# Function to plot boxplot for all features
 def boxplot_all_features(data: pd.DataFrame) -> None:
     plt.figure()
     sns.boxplot(data=data, width=0.5)
@@ -45,6 +46,19 @@ def boxplot_all_features(data: pd.DataFrame) -> None:
     plt.savefig('images/boxplot_of_all_features.png')
     plt.show()
 
+
+# Function to rank features using random forest classifier
+def rank_feature_with_rfc(X_train: pd.DataFrame, y_train: pd.Series) -> None:
+    rfc = RandomForestClassifier()
+    rfc.fit(X_train, y_train)
+    feature_importances = rfc.feature_importances_
+    formatted_feature_importances = {}
+    for i in range(len(feature_importances)):
+        formatted_feature_importances[X_train.columns[i]] = {'importance': feature_importances[i]}
+    sorted_importances = sorted(formatted_feature_importances.items(), key=lambda x: x[1]['importance'], reverse=True)
+
+    for i in range(len(sorted_importances)):
+        print(sorted_importances[i])
 
 # Function to normalize dataset
 def normalize_data(data: pd.DataFrame) -> pd.DataFrame:
@@ -68,21 +82,33 @@ def main():
     trn_df = format_df_columns(trn_df)
     tst_df = format_df_columns(tst_df)
 
-    # Normalize the dataset
-    raw_df = normalize_data(raw_df)
-    trn_df = normalize_data(trn_df)
-    tst_df = normalize_data(tst_df)
-
     # Get X_train, y_train, X_test, y_test
     X_train = trn_df.drop([DEP_FEATURE], axis=1)
     y_train = trn_df[DEP_FEATURE]
     X_test = tst_df.drop([DEP_FEATURE], axis=1)
     y_test = tst_df[DEP_FEATURE]
 
+    # Normalize the dataset
+    X_train = normalize_data(X_train)
+    X_test = normalize_data(X_test)
+
     # Visualize the data by plotting and creating a heatmap for all features in training dataset
     boxplot_all_features(X_train)
     plot_scatter_matrix(X_train)
     plot_heatmap(X_train)
+
+    # Print out feature importance using rfc
+    rank_feature_with_rfc(X_train, y_train)
+
+    # Use Logistic regression with lasso regularization to find significant features
+    sel_ = logistic_regression_with_lasso(X_train, y_train)
+    coefficients = sel_.coef_[0]
+    formatted_coefficients = {}
+    for i in range(len(coefficients)):
+        formatted_coefficients[X_train.columns[i]] = {'coefficient': coefficients[i]}
+    for x, y in formatted_coefficients.items():
+        print(x)
+        print(y)
 
     # Max heap containing tuples of (score, feature)
     # by_score_heap = []
