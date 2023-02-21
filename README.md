@@ -60,3 +60,16 @@ Jake:
 
 ## Operating System and IDE
 
+
+
+task 1
+1, visualize data
+heatmap
+scatter matrix original dataset
+
+2, pre-processing the data
+convert categorical to numeric
+whitening
+pca
+lasso regression on all features
+linear/polynomial regression to test different variations of variables
