@@ -3,6 +3,7 @@ CS6140 Project 3
 Yihan Xu
 Jake Van Meter
 """
+from __future__ import annotations
 
 import numpy as np
 import pandas as pd
@@ -18,6 +19,7 @@ def linear_regression(X_train: pd.DataFrame | pd.Series, y_train: pd.Series) -> 
     # Create and train the linear model on training data
     linear_model = lm.LinearRegression().fit(X=X_train, y=y_train)
     return linear_model
+
 
 def print_linear_reg_model_metrics(model: lm.LinearRegression, X_train: pd.DataFrame | pd.Series,
                                    y_train: pd.Series, X_test: pd.DataFrame | pd.Series,
