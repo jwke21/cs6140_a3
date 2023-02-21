@@ -48,7 +48,7 @@ def pca(data: pd.DataFrame, normalize=False, print_results=False) -> tuple[np.nd
             print("--------------------PCA results with whitening--------------------")
         print("")
         print_pca_results(m, std_deviations, D, eigenvalues, V, projected_data, np.cov(A))
-    # return the means, standard deviations, eigenvalues, eigenvectors, and projected dataD
+    # return the means, standard deviations, eigenvalues, eigenvectors, and projected data
     return m, std_deviations, eigenvalues, V, new_df
 
 

@@ -6,6 +6,7 @@ Jake Van Meter
 
 import numpy as np
 import pandas as pd
+import matplotlib.pyplot as plt
 from sklearn import linear_model as lm
 from typing import *
 
@@ -18,6 +19,104 @@ def linear_regression(X_train: pd.DataFrame | pd.Series, y_train: pd.Series) -> 
     # Create and train the linear model on training data
     linear_model = lm.LinearRegression().fit(X=X_train, y=y_train)
     return linear_model
+
+def polynomial_regression(X_train: pd.DataFrame | pd.Series, y_train: pd.Series, degree: int) -> List[lm.LinearRegression]:
+    if len(X_train.shape) == 1:
+        # If the X_train is a series, transform it into a dataframe of shape (N rows, 1 column)
+        X_train = pd.DataFrame(X_train)
+    models = []
+    for i in range(degree):
+        # Build new training df
+        transformed_data = np.power(X_train, i+1)
+        # Create and train the linear model on training data
+        model = lm.LinearRegression().fit(X=transformed_data, y=y_train)
+        models.append(model)
+    return models
+
+def top_scoring_polynomial_regression_model(models: List[lm.LinearRegression],
+                                            X_test: pd.DataFrame | pd.Series,
+                                            y_test: pd.Series) -> tuple[lm.LinearRegression, int]:
+    if len(X_test.shape) == 1:
+        # If the X_train is a series, transform it into a dataframe of shape (N rows, 1 column)
+        X_test = pd.DataFrame(X_test)
+    # Get the model with the best fit
+    max_score = float("-inf")  # initialize to 0 correlation
+    max_i = 0
+    for i in range(len(models)):
+        transformed_data = np.power(X_test, i+1)
+        cur_model = models[i]
+        cur_score = cur_model.score(transformed_data, y_test)
+        print(f"Degree {i + 1} R squared score: {cur_score}")
+        # Update max score
+        if cur_score > max_score:
+            max_score = cur_score
+            max_i = i
+    return models[max_i], max_i + 1
+
+def sqrt_regression(X_train: pd.DataFrame | pd.Series, y_train: pd.Series) -> List[lm.LinearRegression]:
+    if len(X_train.shape) == 1:
+        # If the X_train is a series, transform it into a dataframe of shape (N rows, 1 column)
+        X_train = pd.DataFrame(X_train)
+    models = []
+    # Build model on non-transformed data
+    model = lm.LinearRegression().fit(X=X_train, y=y_train)
+    models.append(model)
+    # Build model on square rooted data
+    X_train[X_train < 0] = 0 # Replace negative numbers with 0 so no NaN values are produced from sqrt operation
+    transformed_data = np.sqrt(X_train)
+    # Create and train the linear model on training data
+    model = lm.LinearRegression().fit(X=transformed_data, y=y_train)
+    models.append(model)
+    return models
+
+def top_scoring_sqrt_model(models: List[lm.LinearRegression],
+                           X_test: pd.DataFrame | pd.Series,
+                           y_test: pd.Series) -> str:
+    if len(X_test.shape) == 1:
+        # If the X_train is a series, transform it into a dataframe of shape (N rows, 1 column)
+        X_test = pd.DataFrame(X_test)
+    # Get the r2 score of non-transformed input model
+    non_transformed_score = models[0].score(X_test, y_test)
+    # Get the r2 score of the transformed input model
+    X_test[X_test < 0] = 0 # Replace negative numbers with 0 so no NaN values are produced from sqrt operation
+    transformed_data = np.sqrt(X_test)
+    transformed_score = models[1].score(transformed_data, y_test)
+    print(f"R squared score for non-transformed input: {non_transformed_score}")
+    print(f"R squared score for transformed input: {transformed_score}")
+    top_transformation = "non-transformed" if non_transformed_score >= transformed_score else "square root"
+    return top_transformation
+
+def cosine_regression(X_train: pd.DataFrame | pd.Series, y_train: pd.Series) -> List[lm.LinearRegression]:
+    if len(X_train.shape) == 1:
+        # If the X_train is a series, transform it into a dataframe of shape (N rows, 1 column)
+        X_train = pd.DataFrame(X_train)
+    models = []
+    # Build model on non-transformed data
+    model = lm.LinearRegression().fit(X=X_train, y=y_train)
+    models.append(model)
+    # Build model on cosine of input data
+    transformed_data = pd.DataFrame(np.cos(X_train))
+    # Create and train the linear model on training data
+    model = lm.LinearRegression().fit(X=transformed_data, y=y_train)
+    models.append(model)
+    return models
+
+def top_scoring_cosine_model(models: List[lm.LinearRegression],
+                             X_test: pd.DataFrame | pd.Series,
+                             y_test: pd.Series) -> str:
+    if len(X_test.shape) == 1:
+        # If the X_train is a series, transform it into a dataframe of shape (N rows, 1 column)
+        X_test = pd.DataFrame(X_test)
+    # Get the r2 score of non-transformed input model
+    non_transformed_score = models[0].score(X_test, y_test)
+    # Get the r2 score of the transformed input model
+    transformed_data = pd.DataFrame(np.cos(X_test))
+    transformed_score = models[1].score(transformed_data, y_test)
+    print(f"R squared score for non-transformed input: {non_transformed_score}")
+    print(f"R squared score for transformed input: {transformed_score}")
+    top_transformation = "non-transformed" if non_transformed_score >= transformed_score else "cosine"
+    return top_transformation
+    pass
 
 def print_linear_reg_model_metrics(model: lm.LinearRegression, X_train: pd.DataFrame | pd.Series,
                                    y_train: pd.Series, X_test: pd.DataFrame | pd.Series,
