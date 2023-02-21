@@ -21,7 +21,7 @@ mpl.use('TkAgg')
 # Function to plot features in pairs
 def plot_scatter_matrix(data: pd.DataFrame) -> None:
     data = pd.DataFrame(data)
-    Y = data.iloc[:, 1]
+    plt.figure()
     plt.title('Scatter matrix of All Independent Features')
     pd.plotting.scatter_matrix(data, figsize=(35, 35), marker='o')
     plt.savefig('images/scatter_matrix.png')
