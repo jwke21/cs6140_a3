@@ -62,14 +62,15 @@ Jake:
 
 
 
-task 1
-1, visualize data
-heatmap
-scatter matrix original dataset
+## task 1
+### visualize data
 
-2, pre-processing the data
-convert categorical to numeric
-whitening
-pca
-lasso regression on all features
-linear/polynomial regression to test different variations of variables
+- [ ] heatmap
+- [ ] scatter matrix original dataset
+
+### pre-processing the data
+- [ ] convert categorical to numeric
+- [ ] whitening
+- [ ] pca
+- [ ] lasso regression on all features
+- [ ] linear/polynomial regression to test different variations of variables
