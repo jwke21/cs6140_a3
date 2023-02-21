@@ -67,11 +67,11 @@ Jake:
 
 - [ ] heatmap
 - [ ] scatter matrix original dataset
-- [ ] boxplot of features
 
 ### pre-processing the data
 - [ ] convert categorical to numeric
 - [ ] whitening
+- [ ] boxplot of features
 - [ ] pca to reduce dimension to 90%, find relations and significance of variables
 - [ ] lasso regression on all features to find significant features
 - [ ] linear/polynomial regression to test different variations of variables
