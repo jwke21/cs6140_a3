@@ -12,7 +12,6 @@ from sklearn.ensemble import RandomForestClassifier
 import matplotlib as mpl
 import matplotlib.pyplot as plt
 import seaborn as sns
-import heapq as hq
 import pandas as pd
 
 mpl.use('TkAgg')
