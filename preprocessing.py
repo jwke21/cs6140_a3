@@ -89,33 +89,35 @@ def main():
     y_test = tst_df[DEP_FEATURE]
 
     # Normalize the dataset
-    X_train = normalize_data(X_train)
-    X_test = normalize_data(X_test)
+    X_train_numeric_normalized = normalize_data(X_train[NUMERIC_IND_FEATURES])
+    X_test_numeric_normalized = normalize_data(X_test[NUMERIC_IND_FEATURES])
+    X_train = pd.concat([X_train[CATEGORICAL_IND_FEATURES], X_train_numeric_normalized], axis=1)
+    X_test = pd.concat([X_test[CATEGORICAL_IND_FEATURES], X_test_numeric_normalized], axis=1)
 
-    # Visualize the data by plotting and creating a heatmap for all features in training dataset
-    boxplot_all_features(X_train)
-    plot_scatter_matrix(X_train)
-    plot_heatmap(X_train)
+    # # Visualize the data by plotting and creating a heatmap for all features in training dataset
+    # boxplot_all_features(X_train)
+    # plot_scatter_matrix(X_train)
+    # plot_heatmap(X_train)
 
-    # Print out feature importance using rfc
-    rank_feature_with_rfc(X_train, y_train)
+    # # Print out feature importance using rfc
+    # rank_feature_with_rfc(X_train, y_train)
 
-    # Use Logistic regression with lasso regularization to find significant features
-    sel_ = logistic_regression_with_lasso(X_train, y_train)
-    coefficients = sel_.coef_[0]
-    formatted_coefficients = {}
-    for i in range(len(coefficients)):
-        formatted_coefficients[X_train.columns[i]] = {'coefficient': coefficients[i]}
-    for x, y in formatted_coefficients.items():
-        print(x)
-        print(y)
+    # # Use Logistic regression with lasso regularization to find significant features
+    # sel_ = logistic_regression_with_lasso(X_train, y_train)
+    # coefficients = sel_.coef_[0]
+    # formatted_coefficients = {}
+    # for i in range(len(coefficients)):
+    #     formatted_coefficients[X_train.columns[i]] = {'coefficient': coefficients[i]}
+    # for x, y in formatted_coefficients.items():
+    #     print(x)
+    #     print(y)
 
-    #################### Simple Linear Regression ####################
+    # #################### Simple Linear Regression ####################
 
-    print("\n--------------------SIMPLE LINEAR REGRESSION WITH ALL FEATURES--------------------\n")
-    # Conduct simple linear regression using all features
-    model = linear_regression(X_train, y_train)
-    print_linear_reg_model_metrics(model, X_train, y_train, X_test, y_test)
+    # print("\n--------------------SIMPLE LINEAR REGRESSION WITH ALL FEATURES--------------------\n")
+    # # Conduct simple linear regression using all features
+    # model = linear_regression(X_train, y_train)
+    # print_linear_reg_model_metrics(model, X_train, y_train, X_test, y_test)
 
     # # List containing tuples of (score, feature)
     # top_scoring_features = []
@@ -141,54 +143,54 @@ def main():
     # # Print the model's metrics
     # print_linear_reg_model_metrics(model, X_train[top_features], y_train, X_test[top_features], y_test)
 
-    #################### Non-Linear Feature Transformations ####################
+    # #################### Non-Linear Feature Transformations ####################
 
-    ### Try polynomial regression ###
-    DEGREE = 3
-    print("\n--------------------POLYNOMIAL REGRESSION WITH ALL FEATURES--------------------\n")
-    models = polynomial_regression(X_train[DUMMY_IND_FEATURES_NONLIST], y_train, DEGREE)
-    _, best_degree = top_scoring_polynomial_regression_model(models, X_test[DUMMY_IND_FEATURES_NONLIST], y_test)
-    print(f"\nBest fit polynomial for all features: degree {best_degree}\n")
+    # ### Try polynomial regression ###
+    # DEGREE = 3
+    # print("\n--------------------POLYNOMIAL REGRESSION WITH ALL FEATURES--------------------\n")
+    # models = polynomial_regression(X_train[DUMMY_IND_FEATURES_NONLIST], y_train, DEGREE)
+    # _, best_degree = top_scoring_polynomial_regression_model(models, X_test[DUMMY_IND_FEATURES_NONLIST], y_test)
+    # print(f"\nBest fit polynomial for all features: degree {best_degree}\n")
 
-    top_scoring_degrees = []
-    # Try polynomial regression for each feature individually
-    for _, feat in enumerate(NUMERIC_IND_FEATURES):
-        print(f"\n--------------------POLYNOMIAL REGRESSION FOR FEATURE '{feat}'--------------------\n")
-        # Get higher-order degree models
-        models = polynomial_regression(X_train[feat], y_train, DEGREE)
-        # Get highest scoring model
-        _, best_degree = top_scoring_polynomial_regression_model(models, X_test[feat], y_test)
-        top_scoring_degrees.append(best_degree)
-        # Print best fit polynomial
-        print(f"\nBest fit polynomial for feature {feat}: degree {best_degree}\n")
+    # top_scoring_degrees = []
+    # # Try polynomial regression for each feature individually
+    # for _, feat in enumerate(NUMERIC_IND_FEATURES):
+    #     print(f"\n--------------------POLYNOMIAL REGRESSION FOR FEATURE '{feat}'--------------------\n")
+    #     # Get higher-order degree models
+    #     models = polynomial_regression(X_train[feat], y_train, DEGREE)
+    #     # Get highest scoring model
+    #     _, best_degree = top_scoring_polynomial_regression_model(models, X_test[feat], y_test)
+    #     top_scoring_degrees.append(best_degree)
+    #     # Print best fit polynomial
+    #     print(f"\nBest fit polynomial for feature {feat}: degree {best_degree}\n")
 
-    transformed_numeric_data_train = np.power(X_train[NUMERIC_IND_FEATURES], top_scoring_degrees)
-    transformed_data_train = pd.concat([X_train[CATEGORICAL_IND_FEATURES], transformed_numeric_data_train], axis=1)
-    model = linear_regression(transformed_data_train, y_train)
-    transformed_numeric_data_test = np.power(X_test[NUMERIC_IND_FEATURES], top_scoring_degrees)
-    transformed_data_test = pd.concat([X_test[CATEGORICAL_IND_FEATURES], transformed_numeric_data_test], axis=1)
-    print_linear_reg_model_metrics(model, transformed_data_train, y_train, transformed_data_test, y_test)
+    # transformed_numeric_data_train = np.power(X_train[NUMERIC_IND_FEATURES], top_scoring_degrees)
+    # transformed_data_train = pd.concat([X_train[CATEGORICAL_IND_FEATURES], transformed_numeric_data_train], axis=1)
+    # model = linear_regression(transformed_data_train, y_train)
+    # transformed_numeric_data_test = np.power(X_test[NUMERIC_IND_FEATURES], top_scoring_degrees)
+    # transformed_data_test = pd.concat([X_test[CATEGORICAL_IND_FEATURES], transformed_numeric_data_test], axis=1)
+    # print_linear_reg_model_metrics(model, transformed_data_train, y_train, transformed_data_test, y_test)
 
-    ### Try regression with square root of input ###
-    print("\n--------------------REGRESSION WITH SQUARE ROOT TRANSFORMATIONS ON ALL FEATURES--------------------\n")
-    models = sqrt_regression(X_train, y_train)
-    top_transformation = top_scoring_sqrt_model(models, X_test[DUMMY_IND_FEATURES_NONLIST], y_test)
-    print(f"\nBest transformation for all features (i.e. 'non-transformed' vs. 'square root'): {top_transformation}\n")
+    # ### Try regression with square root of input ###
+    # print("\n--------------------REGRESSION WITH SQUARE ROOT TRANSFORMATIONS ON ALL FEATURES--------------------\n")
+    # models = sqrt_regression(X_train, y_train)
+    # top_transformation = top_scoring_sqrt_model(models, X_test[DUMMY_IND_FEATURES_NONLIST], y_test)
+    # print(f"\nBest transformation for all features (i.e. 'non-transformed' vs. 'square root'): {top_transformation}\n")
 
-    # Try taking the square root for each feature individually
-    for _, feat in enumerate(NUMERIC_IND_FEATURES):
-        print(f"\n--------------------REGRESSION WITH SQUARE ROOT TRANSFORMATIONS FOR FEATURE '{feat}'--------------------\n")
-        # Get the models
-        models = sqrt_regression(X_train[feat], y_train)
-        # Evaluate the better performing model
-        top_transformation = top_scoring_sqrt_model(models, X_test[feat], y_test)
-        print(f"\nBest transformation for feature '{feat}' (i.e. 'non-transformed' vs. 'square root'): {top_transformation}\n")
+    # # Try taking the square root for each feature individually
+    # for _, feat in enumerate(NUMERIC_IND_FEATURES):
+    #     print(f"\n--------------------REGRESSION WITH SQUARE ROOT TRANSFORMATIONS FOR FEATURE '{feat}'--------------------\n")
+    #     # Get the models
+    #     models = sqrt_regression(X_train[feat], y_train)
+    #     # Evaluate the better performing model
+    #     top_transformation = top_scoring_sqrt_model(models, X_test[feat], y_test)
+    #     print(f"\nBest transformation for feature '{feat}' (i.e. 'non-transformed' vs. 'square root'): {top_transformation}\n")
 
-    ### Try regression with cosine transformation ###
-    print("\n--------------------REGRESSION WITH COSINE TRANSFORMATIONS ON ALL FEATURES--------------------\n")
-    models = cosine_regression(X_train, y_train)
-    top_transformation = top_scoring_cosine_model(models, X_test[DUMMY_IND_FEATURES_NONLIST], y_test)
-    print(f"\nBest transformation for all features (i.e. 'non-transformed' vs. 'square root'): {top_transformation}\n")
+    # ### Try regression with cosine transformation ###
+    # print("\n--------------------REGRESSION WITH COSINE TRANSFORMATIONS ON ALL FEATURES--------------------\n")
+    # models = cosine_regression(X_train, y_train)
+    # top_transformation = top_scoring_cosine_model(models, X_test[DUMMY_IND_FEATURES_NONLIST], y_test)
+    # print(f"\nBest transformation for all features (i.e. 'non-transformed' vs. 'square root'): {top_transformation}\n")
 
     # Try taking the cosine for each feature individually
     for _, feat in enumerate(NUMERIC_IND_FEATURES):
@@ -200,7 +202,19 @@ def main():
         print(f"\nBest transformation for feature '{feat}' (i.e. 'non-transformed' vs. 'cosine'): {top_transformation}\n")
 
     # Conduct PCA on the numeric independent features of the data set
-    means, stds, eigvals, eigvecs, projected_data = pca(X_train[NUMERIC_IND_FEATURES], normalize=False, print_results=True)
+    means, stds, eigvals, eigvecs, projected_data = pca(X_train[NUMERIC_IND_FEATURES], normalize=False, print_results=False)
+    print(f"Eigenvalues:\n{eigvals}\n")
+    print(f"Eigenvectors:\n{eigvecs}\n")
+
+    totals = [0 for _ in range(len(NUMERIC_IND_FEATURES))]
+    for i, vector in enumerate(eigvecs):
+        eigval = eigvals[i]
+        for j in range(len(vector)):
+            # Multiply feature's value in eigenvector by the eigenvector's value 
+            totals[j] += vector[j] * eigval
+    for i, feat in enumerate(NUMERIC_IND_FEATURES):
+        print(f"Feature '{feat}' dot product between eigenvectors and eigenvalues: {totals[i]}")
+    print("")
 
     # Write formatted data frames to new CSVs
     # raw_df.to_csv(FRMT_RAW_CSV_PATH, index=False)
