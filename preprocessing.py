@@ -173,8 +173,8 @@ def main():
 
     ### Try regression with square root of input ###
     print("\n--------------------REGRESSION WITH SQUARE ROOT TRANSFORMATIONS ON ALL FEATURES--------------------\n")
-    models = sqrt_regression(X_train[DUMMY_IND_FEATURES_NONLIST], y_train)
-    top_transformation = top_scoring_sqrt_model(models, X_test[DUMMY_IND_FEATURES_NONLIST], y_test)
+    models = sqrt_regression(X_train, y_train)
+    top_transformation = top_scoring_sqrt_model(models, X_test, y_test)
     print(f"\nBest transformation for all features (i.e. 'non-transformed' vs. 'square root'): {top_transformation}\n")
 
     # Try taking the square root for each feature individually
@@ -189,7 +189,7 @@ def main():
     ### Try regression with cosine transformation ###
     print("\n--------------------REGRESSION WITH COSINE TRANSFORMATIONS ON ALL FEATURES--------------------\n")
     models = cosine_regression(X_train, y_train)
-    top_transformation = top_scoring_cosine_model(models, X_test[DUMMY_IND_FEATURES_NONLIST], y_test)
+    top_transformation = top_scoring_cosine_model(models, X_test, y_test)
     print(f"\nBest transformation for all features (i.e. 'non-transformed' vs. 'square root'): {top_transformation}\n")
 
     # Try taking the cosine for each feature individually
