@@ -34,7 +34,7 @@ Top scoring independent features:
 Yihan:
 - [ ] Logistic Regression
 - [ ] KNN
-
+- [ ] SVM
 
 Jake:
 - [ ] Decision Tree
