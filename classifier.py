@@ -4,9 +4,10 @@ import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
 import sklearn.naive_bayes as nb
+import sklearn.tree as tree
 from sklearn import svm
 from sklearn import metrics
-from sklearn.metrics import ConfusionMatrixDisplay, confusion_matrix
+from sklearn.metrics import ConfusionMatrixDisplay, confusion_matrix, f1_score, roc_curve
 from abc import ABC
 from typing import *
 
@@ -17,7 +18,8 @@ SkLearnClassifier = TypeVar(
     nb.ComplementNB,
     nb.GaussianNB,
     nb.MultinomialNB,
-    svm
+    tree.DecisionTreeClassifier,
+    svm.SVC
     # TODO: Add any SkLearn classifiers you use here
 )
 
@@ -51,19 +53,23 @@ class ClassifierModel(object):
         return self.erate_test - self.erate_train
 
     def classify(self, X: pd.DataFrame | pd.Series, y: pd.DataFrame | pd.Series) -> None:
-        score = self.model.score(X, y)
+        # Store prediction values for later use
+        self.y_pred = self.model.predict(X)
         # Store test data
         self.X_test = X
         self.y_test = y
+        # Score the model
+        score = self.model.score(X, y)
         # Get error rate
         self.erate_test = 1 - score
 
     def compute_confusion_matrix(self, plot: bool = False) -> np.ndarray:
-        if self.conf_matrix is not None:
-            return self.conf_matrix
-        y_pred = self.model.predict(self.X_test)
-        self.y_pred = y_pred
-        self.conf_matrix = confusion_matrix(self.y_test, y_pred)
+        # Guard against if classication has not been carried out yet
+        if self.y_pred is None:
+            print("Model has not conducted classification yet")
+            return np.ndarray()
+        self.conf_matrix = confusion_matrix(self.y_test, self.y_pred)
+        # Get the precision and recall
         if plot:
             self.plot_conf_matrix()
         return self.conf_matrix
@@ -82,9 +88,11 @@ class ClassifierModel(object):
         print(metrics.accuracy_score(self.y_test, self.y_pred))
 
     def get_roc(self):
+        # Guard against if classication has not been carried out yet
         pass
 
     def get_f1(self):
+        # Guard against if classication has not been carried out yet
         pass
 
     def clear_model(self) -> None:
@@ -95,4 +103,5 @@ class ClassifierModel(object):
         self.y_train = None
         self.X_test = None
         self.y_test = None
+        self.y_pred = None # Predicted y values obtained after classication of X_test
         self.conf_matrix = None
