@@ -42,9 +42,9 @@ class ClassifierModel(object):
         # Get mean accuracy on training set
         self.y_pred_train = self.model.predict(X)
         # score = metrics.accuracy_score(y, self.y_pred_train)
-        score = self.model.score(X, y)
+        self.accuracy_train = self.model.score(X, y)
         # Get error rate on training set
-        self.erate_train = 1 - score
+        self.erate_train = 1 - self.accuracy_train
 
     def classify(self, X: pd.DataFrame | pd.Series, y: pd.DataFrame | pd.Series) -> None:
         # Store test data
@@ -53,9 +53,9 @@ class ClassifierModel(object):
         # Get mean accuracy on test set
         self.y_pred_test = self.model.predict(X)
         # score = metrics.accuracy_score(y, self.y_pred_test)
-        score = self.model.score(X, self.y_test)
+        self.accuracy_test = self.model.score(X, self.y_test)
         # Get error rate on test set
-        self.erate_test = 1 - score
+        self.erate_test = 1 - self.accuracy_test
 
     def compute_confusion_matrix(self, plot: bool = False) -> np.ndarray:
         # Guard against if classication has not been carried out yet
@@ -81,22 +81,10 @@ class ClassifierModel(object):
     def print_accuracy(self) -> None:
         return metrics.accuracy_score(self.y_test, self.y_pred_test)
 
-    # def get_bias(self) -> float:
-    #     if self.y_pred_test.any():
-    #         print("please predict the model first")
-    #     if not self.variance:
-    #         print("please compute variance first")
-    #     mse = ((self.y_test.to_numpy() - self.y_pred_test) ** 2).mean()
-    #     bias = math.sqrt(mse - self.variance)
-    #     self.bias = bias
-    #     return bias
-
-    # def get_variance(self) -> float:
-    #     if not self.y_pred_test.any():
-    #         print("please predict the model first")
-    #     variance = ((self.y_pred_test - self.y_pred_test.mean()) ** 2).mean()
-    #     self.variance = variance
-    #     return variance
+    def get_accuracy(self) -> None:
+        if self.accuracy_test is None:
+            print("Accuracy rate on the test set has not yet been calculated")
+        return self.accuracy_train
 
     def get_bias(self) -> float:
         if self.erate_train is None:
@@ -162,12 +150,20 @@ class ClassifierModel(object):
         plt.legend()
         plt.show()
 
-    def evaluate(self, show_bias: bool = True, show_variance: bool = True, conf_matrix: bool = True, show_prc: bool = True, show_roc: bool = True) -> None:
-        print(f"Bias: {self.get_bias()}")
-        print(f"Variance: {self.get_variance()}")
-        self.compute_confusion_matrix(plot=True)
-        self.compute_f1_score(print_report=True, plot_prc=True)
-        self.compute_roc(plot=True)
+    def evaluate(self, show_bias: bool = True, show_variance: bool = True, show_accuracy: bool = True, show_cm: bool = True, show_prc: bool = True, show_roc: bool = True) -> None:
+        if show_bias:
+            print(f"Bias: {self.get_bias()}")
+        if show_variance:
+            print(f"Variance: {self.get_variance()}")
+        if show_accuracy:
+            print(f"Accuracy on training set: {self.accuracy_train}")
+            print(f"Accuracy on test set: {self.accuracy_test}")
+        if show_cm:
+            self.compute_confusion_matrix(plot=True)
+        if show_prc:
+            self.compute_f1_score(print_report=True, plot_prc=True)
+        if show_roc:
+            self.compute_roc(plot=True)
 
     def clear_model(self) -> None:
         self.model = None
@@ -180,6 +176,8 @@ class ClassifierModel(object):
         self.y_test = None
         self.y_pred_test = None # Predicted y values obtained after classication of X_test
         self.conf_matrix = None
+        self.accuracy_train = None
+        self.accuracy_test = None
         self.fpr = None
         self.tpr = None
         self.roc_characteristics = None
