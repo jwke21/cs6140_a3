@@ -40,29 +40,9 @@ class ClassifierModel(object):
         # Store training data
         self.X_train = X
         self.y_train = y
-        # Score the model
+        # Get mean accuracy on training set
         score = self.model.score(X, y)
-        # Get error rate
-        self.erate_train = 1 - score
-
-    def get_bias(self) -> float:
-        if not self.y_pred.any():
-            print("please predict the model first")
-        if not self.variance:
-            print("please compute variance first")
-        mse = ((self.y_test.to_numpy() - self.y_pred) ** 2).mean()
-        bias = math.sqrt(mse - self.variance)
-        self.bias = bias
-        return bias
-
-    def get_variance(self) -> float:
-        if not self.y_pred.any():
-            print("please predict the model first")
-        variance = ((self.y_pred - self.y_pred.mean()) ** 2).mean()
-        self.variance = variance
-        return variance
-        # Calculate bias for future reference
-        score = self.model.score(X, y)
+        # Get error rate on training set
         self.erate_train = 1 - score
 
     def classify(self, X: pd.DataFrame | pd.Series, y: pd.DataFrame | pd.Series) -> None:
@@ -71,9 +51,9 @@ class ClassifierModel(object):
         # Store test data
         self.X_test = X
         self.y_test = y
-        # Score the model
+        # Get mean accuracy on test set
         score = self.model.score(X, y)
-        # Get error rate
+        # Get error rate on test set
         self.erate_test = 1 - score
 
     def compute_confusion_matrix(self, plot: bool = False) -> np.ndarray:
@@ -101,34 +81,36 @@ class ClassifierModel(object):
         return metrics.accuracy_score(self.y_test, self.y_pred)
 
     def get_bias(self) -> float:
-        if self.erate_train is None:
-            print("Error rate on training set has not been computed")
-            return 0.0
-        return self.erate_train
+        if not self.y_pred.any():
+            print("please predict the model first")
+        if not self.variance:
+            print("please compute variance first")
+        mse = ((self.y_test.to_numpy() - self.y_pred) ** 2).mean()
+        bias = math.sqrt(mse - self.variance)
+        self.bias = bias
+        return bias
 
     def get_variance(self) -> float:
-        if self.erate_train is None:
-            print("Error rate on training set has not been computed")
-            return 0.0
-        if self.erate_test is None:
-            print("Error rate on test set has not been computed")
-            return 0.0
-        return self.erate_test - self.erate_train
+        if not self.y_pred.any():
+            print("please predict the model first")
+        variance = ((self.y_pred - self.y_pred.mean()) ** 2).mean()
+        self.variance = variance
+        return variance
 
-    def get_bias(self) -> float:
-        if self.erate_train is None:
-            print("Error rate on training set has not been computed")
-            return 0.0
-        return self.erate_train
+    # def get_bias(self) -> float:
+    #     if self.erate_train is None:
+    #         print("Error rate on training set has not been computed")
+    #         return 0.0
+    #     return self.erate_train
 
-    def get_variance(self) -> float:
-        if self.erate_train is None:
-            print("Error rate on training set has not been computed")
-            return 0.0
-        if self.erate_test is None:
-            print("Error rate on test set has not been computed")
-            return 0.0
-        return self.erate_test - self.erate_train
+    # def get_variance(self) -> float:
+    #     if self.erate_train is None:
+    #         print("Error rate on training set has not been computed")
+    #         return 0.0
+    #     if self.erate_test is None:
+    #         print("Error rate on test set has not been computed")
+    #         return 0.0
+    #     return self.erate_test - self.erate_train
 
     def get_roc(self):
         # Guard against if classication has not been carried out yet
