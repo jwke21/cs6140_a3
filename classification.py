@@ -5,7 +5,8 @@ from sklearn.linear_model import LogisticRegression
 from sklearn.neighbors import KNeighborsClassifier
 
 
-def train_and_predict(classifier: ClassifierModel, X_train: pd.DataFrame, y_train: pd.Series, X_test: pd.DataFrame, y_test: pd.Series, classifier_type: str) -> None:
+def train_and_predict(classifier: ClassifierModel, X_train: pd.DataFrame, y_train: pd.Series, X_test: pd.DataFrame,
+                      y_test: pd.Series, classifier_type: str) -> None:
     classifier.train(X_train, y_train)
     classifier.classify(X_test, y_test)
     print(f"{classifier_type}:\n")
@@ -35,6 +36,7 @@ def main():
     knn = KNeighborsClassifier(n_neighbors=10)
     knn_classifier = ClassifierModel(knn)
     train_and_predict(knn_classifier, X_train, y_train, X_test, y_test, "K Nearest neighbors")
+
 
 if __name__ == "__main__":
     main()
