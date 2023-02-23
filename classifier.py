@@ -75,6 +75,9 @@ class ClassifierModel(object):
     def get_roc(self):
         pass
 
+    def get_f1(self):
+        pass
+
     def clear_model(self) -> None:
         self.model = None
         self.erate_train = None
