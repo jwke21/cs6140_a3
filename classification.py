@@ -15,8 +15,8 @@ def main():
     svm_classifier.train(X_train, y_train)
     svm_classifier.classify(X_test, y_test)
     print("Support Virtual Machine metrics:\n")
-    print(f"Bias: {svm_classifier.get_bias()}")
     print(f"Variance: {svm_classifier.get_variance()}")
+    print(f"Bias: {svm_classifier.get_bias()}")
     svm_classifier.compute_confusion_matrix(plot=True)
     print(f"Accuracy: {svm_classifier.print_accuracy()}")
 

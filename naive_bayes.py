@@ -42,8 +42,8 @@ def main():
     multinomial.train(X_train, y_train)
     multinomial.classify(X_test, y_test)
     print("\nMultinomial Naive Bayes metrics:\n")
-    print(f"Bias: {multinomial.get_bias()}")
     print(f"Variance: {multinomial.get_variance()}")
+    print(f"Bias: {multinomial.get_bias()}")
     multinomial.compute_confusion_matrix(plot=True)
 
     # Build and evaluate a Bernoulli Naive Bayes model
@@ -51,8 +51,8 @@ def main():
     bernoulli.train(X_train, y_train)
     bernoulli.classify(X_test, y_test)
     print("\nBernoulli Naive Bayes metrics:\n")
-    print(f"Bias: {bernoulli.get_bias()}")
     print(f"Variance: {bernoulli.get_variance()}")
+    print(f"Bias: {bernoulli.get_bias()}")
     bernoulli.compute_confusion_matrix(plot=True)
     
 

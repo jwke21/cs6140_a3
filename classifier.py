@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import math
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
@@ -34,23 +35,27 @@ class ClassifierModel(object):
         # Store training data
         self.X_train = X
         self.y_train = y
-        # Calculate bias for future reference
-        self.erate_train = 1 - self.model.score(X, y)
+        # Score the model
+        score = self.model.score(X, y)
+        # Get error rate
+        self.erate_train = 1 - score
 
     def get_bias(self) -> float:
-        if not self.erate_train:
-            print("Error rate on training set has not been computed")
-            return 0.0
-        return self.erate_train
+        if not self.y_pred.any():
+            print("please predict the model first")
+        if not self.variance:
+            print("please compute variance first")
+        mse = ((self.y_test.to_numpy() - self.y_pred) ** 2).mean()
+        bias = math.sqrt(mse - self.variance)
+        self.bias = bias
+        return bias
 
     def get_variance(self) -> float:
-        if not self.erate_train:
-            print("Error rate on training set has not been computed")
-            return 0.0
-        if not self.erate_test:
-            print("Error rate on test set has not been computed")
-            return 0.0
-        return self.erate_test - self.erate_train
+        if not self.y_pred.any():
+            print("please predict the model first")
+        variance = ((self.y_pred - self.y_pred.mean()) ** 2).mean()
+        self.variance = variance
+        return variance
 
     def classify(self, X: pd.DataFrame | pd.Series, y: pd.DataFrame | pd.Series) -> None:
         # Store prediction values for later use
