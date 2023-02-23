@@ -21,15 +21,15 @@ def main():
     X_test = open_csv_as_df(X_TEST_CSV_PATH)
     y_test = open_csv_as_df(Y_TEST_CSV_PATH)
 
-    # # SVM classifier
-    # svmcl = svm.SVC()
-    # svm_classifier = ClassifierModel(svmcl)
-    # train_and_predict(svm_classifier, X_train, y_train, X_test, y_test, "Support Virtual Machine")
-    #
-    # # Logistic regression classifier
-    # lr = LogisticRegression(C=0.5, solver='liblinear')
-    # lr_classifier = ClassifierModel(lr)
-    # train_and_predict(lr_classifier, X_train, y_train, X_test, y_test, "Logistic Regression")
+    # SVM classifier
+    svmcl = svm.SVC()
+    svm_classifier = ClassifierModel(svmcl)
+    train_and_predict(svm_classifier, X_train, y_train, X_test, y_test, "Support Virtual Machine")
+
+    # Logistic regression classifier
+    lr = LogisticRegression(C=0.5, solver='liblinear')
+    lr_classifier = ClassifierModel(lr)
+    train_and_predict(lr_classifier, X_train, y_train, X_test, y_test, "Logistic Regression")
 
     # KNN classifier
     knn = KNeighborsClassifier(n_neighbors=10)
