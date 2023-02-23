@@ -50,34 +50,21 @@ def main():
     multinomial = NaiveBayesMultinomial()
     multinomial.train(X_train, y_train)
     multinomial.classify(X_test, y_test)
-    print(f"Bias: {multinomial.get_bias()}")
-    print(f"Variance: {multinomial.get_variance()}")
-    multinomial.compute_confusion_matrix(plot=True)
-    print(multinomial.model.classes_)
-    multinomial.compute_f1_score(print_report=True, plot_prc=True)
-    multinomial.compute_roc(plot=True)
+    multinomial.evaluate()
 
     # Build and evaluate a Bernoulli Naive Bayes model
     print("\n--------------------Bernoulli Naive Bayes metrics--------------------\n")
     bernoulli = NaiveBayesBernoulli()
     bernoulli.train(X_train, y_train)
     bernoulli.classify(X_test, y_test)
-    print(f"Bias: {bernoulli.get_bias()}")
-    print(f"Variance: {bernoulli.get_variance()}")
-    bernoulli.compute_confusion_matrix(plot=True)
-    bernoulli.compute_f1_score(print_report=True)
-    bernoulli.compute_f1_score(print_report=True, plot_prc=True)
+    bernoulli.evaluate()
 
     # Build and evaluate a Gaussian Naive Bayes model
     print("\n--------------------Gaussian Naive Bayes metrics--------------------\n")
     gaussian = NaiveBayesGaussian()
     gaussian.train(X_train, y_train)
     gaussian.classify(X_test, y_test)
-    print(f"Bias {gaussian.get_bias()}")
-    print(f"Variance: {gaussian.get_variance()}")
-    gaussian.compute_confusion_matrix(plot=True)
-    gaussian.compute_f1_score(print_report=True)
-    gaussian.compute_f1_score(print_report=True, plot_prc=True)
+    gaussian.evaluate()
     
 
 if __name__ == "__main__":
