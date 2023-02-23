@@ -75,7 +75,7 @@ class ClassifierModel(object):
         print("\nConfusion Matrix:\n")
         print(f"{self.conf_matrix}\n")
         disp = metrics.ConfusionMatrixDisplay(self.conf_matrix)
-        disp.plot()
+        disp.plot(cmap="Blues", colorbar=False)
         plt.show()
 
     def print_accuracy(self) -> None:
@@ -161,6 +161,13 @@ class ClassifierModel(object):
         plt.ylabel("Recall")
         plt.legend()
         plt.show()
+
+    def evaluate(self, show_bias: bool = True, show_variance: bool = True, conf_matrix: bool = True, show_prc: bool = True, show_roc: bool = True) -> None:
+        print(f"Bias: {self.get_bias()}")
+        print(f"Variance: {self.get_variance()}")
+        self.compute_confusion_matrix(plot=True)
+        self.compute_f1_score(print_report=True, plot_prc=True)
+        self.compute_roc(plot=True)
 
     def clear_model(self) -> None:
         self.model = None
