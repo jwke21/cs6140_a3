@@ -7,8 +7,7 @@ import sklearn.naive_bayes as nb
 import sklearn.tree as tree
 from sklearn import svm
 from sklearn import metrics
-from sklearn.metrics import ConfusionMatrixDisplay, confusion_matrix, f1_score, roc_curve
-from abc import ABC
+from sklearn.metrics import f1_score, roc_curve
 from typing import *
 
 SkLearnClassifier = TypeVar(
@@ -30,27 +29,13 @@ class ClassifierModel(object):
         self.model = model
 
     def train(self, X: pd.DataFrame | pd.Series, y: pd.DataFrame | pd.Series) -> None:
-        self.model.fit(X, y)
+        self.model.fit(X, np.ravel(y))
         # Store training data
         self.X_train = X
         self.y_train = y
         # Calculate bias for future reference
-        self.erate_train = 1 - self.model.score(X, y)
-
-    def get_bias(self) -> float:
-        if not self.erate_train:
-            print("Error rate on training set has not been computed")
-            return 0.0
-        return self.erate_train
-
-    def get_variance(self) -> float:
-        if not self.erate_train:
-            print("Error rate on training set has not been computed")
-            return 0.0
-        if not self.erate_test:
-            print("Error rate on test set has not been computed")
-            return 0.0
-        return self.erate_test - self.erate_train
+        score = self.model.score(X, y)
+        self.erate_train = 1 - score
 
     def classify(self, X: pd.DataFrame | pd.Series, y: pd.DataFrame | pd.Series) -> None:
         # Store prediction values for later use
@@ -68,7 +53,7 @@ class ClassifierModel(object):
         if self.y_pred is None:
             print("Model has not conducted classification yet")
             return np.ndarray()
-        self.conf_matrix = confusion_matrix(self.y_test, self.y_pred)
+        self.conf_matrix = metrics.confusion_matrix(self.y_test, self.y_pred)
         # Get the precision and recall
         if plot:
             self.plot_conf_matrix()
@@ -78,14 +63,29 @@ class ClassifierModel(object):
         if self.conf_matrix is None:
             print("Confusion matrix has not been computed")
             return
-        print("\n--------------------CONFUSION MATRIX--------------------\n")
+        print("\nConfusion Matrix:\n")
         print(f"{self.conf_matrix}\n")
-        disp = ConfusionMatrixDisplay(self.conf_matrix)
+        disp = metrics.ConfusionMatrixDisplay(self.conf_matrix)
         disp.plot()
         plt.show()
 
     def print_accuracy(self) -> None:
         print(metrics.accuracy_score(self.y_test, self.y_pred))
+
+    def get_bias(self) -> float:
+        if self.erate_train is None:
+            print("Error rate on training set has not been computed")
+            return 0.0
+        return self.erate_train
+
+    def get_variance(self) -> float:
+        if self.erate_train is None:
+            print("Error rate on training set has not been computed")
+            return 0.0
+        if self.erate_test is None:
+            print("Error rate on test set has not been computed")
+            return 0.0
+        return self.erate_test - self.erate_train
 
     def get_roc(self):
         # Guard against if classication has not been carried out yet
