@@ -46,31 +46,38 @@ def main():
     y_test = open_csv_as_df(Y_TEST_CSV_PATH)
 
     # Build and evaluate a Multinomial Naive Bayes model
+    print("\n--------------------Multinomial Naive Bayes metrics--------------------\n")
     multinomial = NaiveBayesMultinomial()
     multinomial.train(X_train, y_train)
     multinomial.classify(X_test, y_test)
-    print("\nMultinomial Naive Bayes metrics:\n")
-    print(f"Variance: {multinomial.get_variance()}")
     print(f"Bias: {multinomial.get_bias()}")
+    print(f"Variance: {multinomial.get_variance()}")
     multinomial.compute_confusion_matrix(plot=True)
+    print(multinomial.model.classes_)
+    multinomial.compute_f1_score(print_report=True, plot_prc=True)
+    multinomial.compute_roc(plot=True)
 
     # Build and evaluate a Bernoulli Naive Bayes model
+    print("\n--------------------Bernoulli Naive Bayes metrics--------------------\n")
     bernoulli = NaiveBayesBernoulli()
     bernoulli.train(X_train, y_train)
     bernoulli.classify(X_test, y_test)
-    print("\nBernoulli Naive Bayes metrics:\n")
-    print(f"Variance: {bernoulli.get_variance()}")
     print(f"Bias: {bernoulli.get_bias()}")
+    print(f"Variance: {bernoulli.get_variance()}")
     bernoulli.compute_confusion_matrix(plot=True)
+    bernoulli.compute_f1_score(print_report=True)
+    bernoulli.compute_f1_score(print_report=True, plot_prc=True)
 
     # Build and evaluate a Gaussian Naive Bayes model
+    print("\n--------------------Gaussian Naive Bayes metrics--------------------\n")
     gaussian = NaiveBayesGaussian()
     gaussian.train(X_train, y_train)
     gaussian.classify(X_test, y_test)
-    print("\nGaussian Naive Bayes metrics:\n")
     print(f"Bias {gaussian.get_bias()}")
     print(f"Variance: {gaussian.get_variance()}")
     gaussian.compute_confusion_matrix(plot=True)
+    gaussian.compute_f1_score(print_report=True)
+    gaussian.compute_f1_score(print_report=True, plot_prc=True)
     
 
 if __name__ == "__main__":
