@@ -62,6 +62,7 @@ class ClassifierModel(object):
         if self.conf_matrix is not None:
             return self.conf_matrix
         y_pred = self.model.predict(self.X_test)
+        self.y_pred = y_pred
         self.conf_matrix = confusion_matrix(self.y_test, y_pred)
         if plot:
             self.plot_conf_matrix()
@@ -77,8 +78,8 @@ class ClassifierModel(object):
         disp.plot()
         plt.show()
 
-    def print_accuracy(y_test: pd.Series, y_pred: pd.Series) -> None:
-        print(metrics.accuracy_score(y_test, y_pred))
+    def print_accuracy(self) -> None:
+        print(metrics.accuracy_score(self.y_test, self.y_pred))
 
     def get_roc(self):
         pass
