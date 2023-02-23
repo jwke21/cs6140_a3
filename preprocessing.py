@@ -59,6 +59,7 @@ def rank_feature_with_rfc(X_train: pd.DataFrame, y_train: pd.Series) -> None:
     for i in range(len(sorted_importances)):
         print(sorted_importances[i])
 
+
 # Function to normalize dataset
 def normalize_data(data: pd.DataFrame) -> pd.DataFrame:
     A = data.values
@@ -92,13 +93,6 @@ def main():
     X_test_numeric_normalized = normalize_data(X_test[NUMERIC_IND_FEATURES])
     X_train = pd.concat([X_train[CATEGORICAL_IND_FEATURES], X_train_numeric_normalized], axis=1)
     X_test = pd.concat([X_test[CATEGORICAL_IND_FEATURES], X_test_numeric_normalized], axis=1)
-
-    # Write formatted data frames to new CSVs
-    # we need to drop the insignificant features before saving for later use
-    X_train.to_csv(X_TRAIN_CSV_PATH, index=False)
-    X_test.to_csv(X_TEST_CSV_PATH, index=False)
-    y_train.to_csv(Y_TRAIN_CSV_PATH, index=False)
-    y_test.to_csv(Y_TEST_CSV_PATH, index=False)
 
     # Visualize the data by plotting and creating a heatmap for all features in training dataset
     boxplot_all_features(X_train)
@@ -185,12 +179,14 @@ def main():
 
     # Try taking the square root for each feature individually
     for _, feat in enumerate(NUMERIC_IND_FEATURES):
-        print(f"\n--------------------REGRESSION WITH SQUARE ROOT TRANSFORMATIONS FOR FEATURE '{feat}'--------------------\n")
+        print(
+            f"\n--------------------REGRESSION WITH SQUARE ROOT TRANSFORMATIONS FOR FEATURE '{feat}'--------------------\n")
         # Get the models
         models = sqrt_regression(X_train[feat], y_train)
         # Evaluate the better performing model
         top_transformation = top_scoring_sqrt_model(models, X_test[feat], y_test)
-        print(f"\nBest transformation for feature '{feat}' (i.e. 'non-transformed' vs. 'square root'): {top_transformation}\n")
+        print(
+            f"\nBest transformation for feature '{feat}' (i.e. 'non-transformed' vs. 'square root'): {top_transformation}\n")
 
     ### Try regression with cosine transformation ###
     print("\n--------------------REGRESSION WITH COSINE TRANSFORMATIONS ON ALL FEATURES--------------------\n")
@@ -200,15 +196,18 @@ def main():
 
     # Try taking the cosine for each feature individually
     for _, feat in enumerate(NUMERIC_IND_FEATURES):
-        print(f"\n--------------------REGRESSION WITH COSINE TRANSFORMATIONS FOR FEATURE '{feat}'--------------------\n")
+        print(
+            f"\n--------------------REGRESSION WITH COSINE TRANSFORMATIONS FOR FEATURE '{feat}'--------------------\n")
         # Get the models
         models = cosine_regression(X_train[feat], y_train)
         # Evaluate the better performing model
         top_transformation = top_scoring_sqrt_model(models, X_test[feat], y_test)
-        print(f"\nBest transformation for feature '{feat}' (i.e. 'non-transformed' vs. 'cosine'): {top_transformation}\n")
+        print(
+            f"\nBest transformation for feature '{feat}' (i.e. 'non-transformed' vs. 'cosine'): {top_transformation}\n")
 
     # Conduct PCA on the numeric independent features of the data set
-    means, stds, eigvals, eigvecs, projected_data = pca(X_train[NUMERIC_IND_FEATURES], normalize=False, print_results=False)
+    means, stds, eigvals, eigvecs, projected_data = pca(X_train[NUMERIC_IND_FEATURES], normalize=False,
+                                                        print_results=False)
     print(f"Eigenvalues:\n{eigvals}\n")
     print(f"Eigenvectors:\n{eigvecs}\n")
 
@@ -216,7 +215,7 @@ def main():
     for i, vector in enumerate(eigvecs):
         eigval = eigvals[i]
         for j in range(len(vector)):
-            # Multiply feature's value in eigenvector by the eigenvector's value 
+            # Multiply feature's value in eigenvector by the eigenvector's value
             totals[j] += vector[j] * eigval
     for i, feat in enumerate(NUMERIC_IND_FEATURES):
         print(f"Feature '{feat}' dot product between eigenvectors and eigenvalues: {totals[i]}")
@@ -226,6 +225,16 @@ def main():
     # raw_df.to_csv(FRMT_RAW_CSV_PATH, index=False)
     # trn_df.to_csv(FRMT_TRN_CSV_PATH, index=False)
     # tst_df.to_csv(FRMT_TST_CSV_PATH, index=False)
+
+    # we need to drop the insignificant features before saving for later use
+    X_train.drop(['RestingBP', 'Normal', 'ST'], inplace=True, axis=1)
+    X_test.drop(['RestingBP', 'Normal', 'ST'], inplace=True, axis=1)
+
+    # Write formatted data frames to new CSVs
+    X_train.to_csv(X_TRAIN_CSV_PATH, index=False)
+    X_test.to_csv(X_TEST_CSV_PATH, index=False)
+    y_train.to_csv(Y_TRAIN_CSV_PATH, index=False)
+    y_test.to_csv(Y_TEST_CSV_PATH, index=False)
 
 
 if __name__ == "__main__":

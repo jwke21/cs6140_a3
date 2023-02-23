@@ -1,8 +1,11 @@
+from __future__ import annotations
 
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
 import sklearn.naive_bayes as nb
+from sklearn import svm
+from sklearn import metrics
 from sklearn.metrics import ConfusionMatrixDisplay, confusion_matrix
 from abc import ABC
 from typing import *
@@ -14,8 +17,10 @@ SkLearnClassifier = TypeVar(
     nb.ComplementNB,
     nb.GaussianNB,
     nb.MultinomialNB,
+    svm
     # TODO: Add any SkLearn classifiers you use here
-    )
+)
+
 
 class ClassifierModel(object):
     def __init__(self, model: SkLearnClassifier) -> None:
@@ -71,6 +76,9 @@ class ClassifierModel(object):
         disp = ConfusionMatrixDisplay(self.conf_matrix)
         disp.plot()
         plt.show()
+
+    def print_accuracy(y_test: pd.Series, y_pred: pd.Series) -> None:
+        print(metrics.accuracy_score(y_test, y_pred))
 
     def get_roc(self):
         pass
