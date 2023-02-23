@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import math
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
@@ -7,6 +8,10 @@ import sklearn.naive_bayes as nb
 import sklearn.tree as tree
 from sklearn import svm
 from sklearn import metrics
+from sklearn.metrics import ConfusionMatrixDisplay, confusion_matrix, f1_score, roc_curve
+from sklearn.linear_model import LogisticRegression
+from sklearn.neighbors import KNeighborsClassifier
+from abc import ABC
 from sklearn.metrics import f1_score, roc_curve
 from typing import *
 
@@ -18,7 +23,9 @@ SkLearnClassifier = TypeVar(
     nb.GaussianNB,
     nb.MultinomialNB,
     tree.DecisionTreeClassifier,
-    svm.SVC
+    svm.SVC,
+    LogisticRegression,
+    KNeighborsClassifier
     # TODO: Add any SkLearn classifiers you use here
 )
 
@@ -33,6 +40,27 @@ class ClassifierModel(object):
         # Store training data
         self.X_train = X
         self.y_train = y
+        # Score the model
+        score = self.model.score(X, y)
+        # Get error rate
+        self.erate_train = 1 - score
+
+    def get_bias(self) -> float:
+        if not self.y_pred.any():
+            print("please predict the model first")
+        if not self.variance:
+            print("please compute variance first")
+        mse = ((self.y_test.to_numpy() - self.y_pred) ** 2).mean()
+        bias = math.sqrt(mse - self.variance)
+        self.bias = bias
+        return bias
+
+    def get_variance(self) -> float:
+        if not self.y_pred.any():
+            print("please predict the model first")
+        variance = ((self.y_pred - self.y_pred.mean()) ** 2).mean()
+        self.variance = variance
+        return variance
         # Calculate bias for future reference
         score = self.model.score(X, y)
         self.erate_train = 1 - score
@@ -70,7 +98,22 @@ class ClassifierModel(object):
         plt.show()
 
     def print_accuracy(self) -> None:
-        print(metrics.accuracy_score(self.y_test, self.y_pred))
+        return metrics.accuracy_score(self.y_test, self.y_pred)
+
+    def get_bias(self) -> float:
+        if self.erate_train is None:
+            print("Error rate on training set has not been computed")
+            return 0.0
+        return self.erate_train
+
+    def get_variance(self) -> float:
+        if self.erate_train is None:
+            print("Error rate on training set has not been computed")
+            return 0.0
+        if self.erate_test is None:
+            print("Error rate on test set has not been computed")
+            return 0.0
+        return self.erate_test - self.erate_train
 
     def get_bias(self) -> float:
         if self.erate_train is None:
