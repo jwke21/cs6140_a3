@@ -10,6 +10,10 @@ TST_CSV_PATH = "./data/heart_test_200.csv"
 FRMT_RAW_CSV_PATH = "./data/formatted_heart.csv"
 FRMT_TRN_CSV_PATH = "./data/formatted_heart_train_718.csv"
 FRMT_TST_CSV_PATH = "./data/formatted_heart_test_200.csv"
+X_TRAIN_CSV_PATH = "./data/X_train.csv"
+Y_TRAIN_CSV_PATH = "./data/y_train.csv"
+X_TEST_CSV_PATH = "./data/X_test.csv"
+Y_TEST_CSV_PATH = "./data/y_test.csv"
 
 IND_FEATURES = [
     "Age",              # Numeric

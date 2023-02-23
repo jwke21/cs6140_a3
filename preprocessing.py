@@ -93,6 +93,13 @@ def main():
     X_train = pd.concat([X_train[CATEGORICAL_IND_FEATURES], X_train_numeric_normalized], axis=1)
     X_test = pd.concat([X_test[CATEGORICAL_IND_FEATURES], X_test_numeric_normalized], axis=1)
 
+    # Write formatted data frames to new CSVs
+    # we need to drop the insignificant features before saving for later use
+    X_train.to_csv(X_TRAIN_CSV_PATH, index=False)
+    X_test.to_csv(X_TEST_CSV_PATH, index=False)
+    y_train.to_csv(Y_TRAIN_CSV_PATH, index=False)
+    y_test.to_csv(Y_TEST_CSV_PATH, index=False)
+
     # Visualize the data by plotting and creating a heatmap for all features in training dataset
     boxplot_all_features(X_train)
     plot_scatter_matrix(X_train)

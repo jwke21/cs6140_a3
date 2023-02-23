@@ -30,6 +30,12 @@ def logistic_regression_with_lasso(X_train: pd.DataFrame, y_train: pd.Series) ->
     return sel_
 
 
+def logistic_regression(X_train: pd.DataFrame, y_train: pd.Series) -> lm.LinearRegression:
+    lr = LogisticRegression(C=0.5, solver='liblinear')
+    lr.fit(X_train, y_train)
+    return lr
+
+
 def polynomial_regression(X_train: pd.DataFrame | pd.Series, y_train: pd.Series, degree: int) -> List[lm.LinearRegression]:
     if len(X_train.shape) == 1:
         # If the X_train is a series, transform it into a dataframe of shape (N rows, 1 column)
