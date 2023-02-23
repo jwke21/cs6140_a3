@@ -9,6 +9,8 @@ import sklearn.tree as tree
 from sklearn import svm
 from sklearn import metrics
 from sklearn.metrics import ConfusionMatrixDisplay, confusion_matrix, f1_score, roc_curve
+from sklearn.linear_model import LogisticRegression
+from sklearn.neighbors import KNeighborsClassifier
 from abc import ABC
 from typing import *
 
@@ -20,7 +22,9 @@ SkLearnClassifier = TypeVar(
     nb.GaussianNB,
     nb.MultinomialNB,
     tree.DecisionTreeClassifier,
-    svm.SVC
+    svm.SVC,
+    LogisticRegression,
+    KNeighborsClassifier
     # TODO: Add any SkLearn classifiers you use here
 )
 
