@@ -8,7 +8,7 @@ import pandas as pd
 from consts import *
 from utils import *
 from classifier import ClassifierModel
-from sklearn.naive_bayes import MultinomialNB, BernoulliNB
+from sklearn.naive_bayes import MultinomialNB, BernoulliNB, GaussianNB
 
 
 class NaiveBayesMultinomial(ClassifierModel):
@@ -27,9 +27,17 @@ class NaiveBayesMultinomial(ClassifierModel):
         X_new = X.mask(X < 0, 0)
         return super().classify(X_new, y)
 
+
 class NaiveBayesBernoulli(ClassifierModel):
     def __init__(self) -> None:
         super().__init__(BernoulliNB())
+
+
+class NaiveBayesGaussian(ClassifierModel):
+    def __init__(self) -> None:
+        super().__init__(GaussianNB())
+
+
 
 def main():
     X_train = open_csv_as_df(X_TRAIN_CSV_PATH)
@@ -54,6 +62,15 @@ def main():
     print(f"Bias: {bernoulli.get_bias()}")
     print(f"Variance: {bernoulli.get_variance()}")
     bernoulli.compute_confusion_matrix(plot=True)
+
+    # Build and evaluate a Gaussian Naive Bayes model
+    gaussian = NaiveBayesGaussian()
+    gaussian.train(X_train, y_train)
+    gaussian.classify(X_test, y_test)
+    print("\nGaussian Naive Bayes metrics:\n")
+    print(f"Bias {gaussian.get_bias()}")
+    print(f"Variance: {gaussian.get_variance()}")
+    gaussian.compute_confusion_matrix(plot=True)
     
 
 if __name__ == "__main__":
