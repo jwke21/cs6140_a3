@@ -20,7 +20,7 @@ def main():
     y_test = open_csv_as_df(Y_TEST_CSV_PATH)
 
     # SVM classifier
-    svmcl = svm.SVC()
+    svmcl = svm.SVC(probability=True)
     svm_classifier = ClassifierModel(svmcl)
     train_and_predict(svm_classifier, X_train, y_train, X_test, y_test, "Support Virtual Machine")
 
