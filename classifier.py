@@ -85,7 +85,7 @@ class ClassifierModel(object):
         plt.show()
 
     def print_accuracy(self) -> None:
-        print(metrics.accuracy_score(self.y_test, self.y_pred))
+        return metrics.accuracy_score(self.y_test, self.y_pred)
 
     def get_roc(self):
         # Guard against if classication has not been carried out yet
