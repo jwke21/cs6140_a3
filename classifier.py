@@ -130,9 +130,6 @@ class ClassifierModel(object):
             fpr, tpr, thresholds = self.roc_characteristics
         else:
             fpr, tpr, thresholds = roc_characteristics
-        # Find the threshold closest to 0 (i.e. the default operating point)
-        default_op_point = np.argmin(np.abs(thresholds))
-        plt.plot(fpr[default_op_point], tpr[default_op_point], 'o', markersize=10, label="threshold zero", fillstyle="none", c="k", mew=2)
         plt.plot(fpr, tpr, label="ROC Curve")
         plt.xlabel("False Positive Rate (FPR)")
         plt.ylabel("True Positive Rate (TPR)")
@@ -153,10 +150,6 @@ class ClassifierModel(object):
         # Get the the positive probabilities (i.e. that y is True or 1)
         proba = self.model.predict_proba(self.X_test)[:, 1]
         precision, recall, thresholds = metrics.precision_recall_curve(self.y_test, proba)
-        # Find the threshold closest to 0 (i.e. the default operating point)
-        default_op_point = np.argmin(np.abs(thresholds))
-        plt.plot(precision[default_op_point], recall[default_op_point], 'o', markersize=10, label="threshold zero", fillstyle="none", c="k", mew=2)
-        plt.plot(precision, recall, label="Precision Recall Curve")
         plt.xlabel("Precision")
         plt.ylabel("Recall")
         plt.legend()
