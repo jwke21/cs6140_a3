@@ -138,6 +138,7 @@ class ClassifierModel(object):
         # Get the the positive probabilities (i.e. that y is True or 1)
         proba = self.model.predict_proba(self.X_test)[:, 1]
         precision, recall, thresholds = metrics.precision_recall_curve(self.y_test, proba)
+        plt.plot(precision, recall, label="PRC Curve")
         plt.xlabel("Precision")
         plt.ylabel("Recall")
         plt.legend()
