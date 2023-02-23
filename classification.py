@@ -9,11 +9,8 @@ def train_and_predict(classifier: ClassifierModel, X_train: pd.DataFrame, y_trai
                       y_test: pd.Series, classifier_type: str) -> None:
     classifier.train(X_train, y_train)
     classifier.classify(X_test, y_test)
-    print(f"{classifier_type}:\n")
-    print(f"Variance: {classifier.get_variance()}")
-    print(f"Bias: {classifier.get_bias()}")
-    classifier.compute_confusion_matrix(plot=True)
-    print(f"Accuracy: {classifier.print_accuracy()}")
+    print(f"Result for {classifier_type}")
+    classifier.evaluate()
 
 
 def main():
