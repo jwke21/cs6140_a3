@@ -158,6 +158,7 @@ class ClassifierModel(object):
             self.compute_f1_score(print_report=True, plot_prc=True)
         if show_roc:
             self.compute_roc(plot=True)
+        print("")
 
     def clear_model(self) -> None:
         self.model = None
