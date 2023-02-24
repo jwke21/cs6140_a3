@@ -22,7 +22,7 @@ def main():
     # SVM classifier
     svmcl = svm.SVC(probability=True)
     svm_classifier = ClassifierModel(svmcl)
-    train_and_predict(svm_classifier, X_train, y_train, X_test, y_test, "Support Virtual Machine")
+    train_and_predict(svm_classifier, X_train, y_train, X_test, y_test, "Support Vector Machine")
 
     # Logistic regression classifier
     lr = LogisticRegression(C=0.5, solver='liblinear')
