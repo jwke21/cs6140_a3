@@ -16,6 +16,9 @@
 
 ## Links
 
+- <a href="https://scikit-learn.org/stable/modules/classes.html#">Scikit-Learn API Reference</a>
+- 
+
 ## Operating System and IDE
 
 <b>Yihan Xu</b>
