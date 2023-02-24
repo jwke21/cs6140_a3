@@ -25,13 +25,11 @@ def main():
     y_test = open_csv_as_df(Y_TEST_CSV_PATH)
 
     # Build and evaluate a Decision Tree Classifier model
+    print("\n--------------------Decision Tree Classifier metrics--------------------\n")
     dt = TreeClassifier()
     dt.train(X_train, y_train)
     dt.classify(X_test, y_test)
-    print("\n--------------------Decision Tree Classifier metrics--------------------\n")
-    print(f"Bias: {dt.get_bias()}")
-    print(f"Variance: {dt.get_variance()}")
-    dt.compute_confusion_matrix(plot=True)
+    dt.evaluate()
 
 if __name__ == "__main__":
     main()
