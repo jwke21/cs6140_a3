@@ -8,9 +8,13 @@
 <b>Jake Van Meter</b>
 - NUID: 002965845
 
+## Instructions for Running
+
+## Structure of Project
+
+## Instructions for Testing Extensions
+
 ## Links
-
-
 
 ## Operating System and IDE
 
