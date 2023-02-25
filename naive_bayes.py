@@ -34,9 +34,44 @@ class NaiveBayesBernoulli(ClassifierModel):
 
 
 class NaiveBayesGaussian(ClassifierModel):
-    def __init__(self) -> None:
-        super().__init__(GaussianNB())
+    def __init__(self, prior_probabilities: Tuple[float, float] = None) -> None:
+        super().__init__(GaussianNB(priors=prior_probabilities))
 
+    def iteration1(self) -> None:
+        X_train, y_train = self.X_train, self.y_train
+        X_test, y_test = self.X_test, self.y_test
+        self.clear_model()
+        # Adjust prior probabilities for HeartDisease classes
+        prior_probabilities = [0.4, 0.6]
+        self.model = GaussianNB(priors=prior_probabilities)
+        self.train(X_train, y_train)
+        self.classify(X_test, y_test)
+        self.evaluate(True, True, True, True, False, False)
+
+    def iteration2(self) -> None:
+        ind_features = [
+            "Age",
+            "Cholesterol",
+            "MaxHR",
+            "Oldpeak",
+        ]
+        X_train, y_train = self.X_train[ind_features].copy(), self.y_train.copy()
+        X_test, y_test = self.X_test[ind_features].copy(), self.y_test.copy()
+        self.clear_model()
+        prior_probabilities = [0.4, 0.6]
+        self.model = GaussianNB(priors=prior_probabilities)
+        self.train(X_train, y_train)
+        self.classify(X_test, y_test)
+        self.evaluate(True, True, True, True, False, False)
+
+    def iteration3(self, X_train, y_train, X_test, y_test) -> None:
+        prior_probabilities = [0.4, 0.6]
+        smoothing = 0.1
+        self.clear_model()
+        self.model = GaussianNB(priors=prior_probabilities, var_smoothing=smoothing)
+        self.train(X_train, y_train)
+        self.classify(X_test, y_test)
+        self.evaluate(True, True, True, True, False, False)
 
 
 def main():
@@ -65,7 +100,18 @@ def main():
     gaussian.train(X_train, y_train)
     gaussian.classify(X_test, y_test)
     gaussian.evaluate()
-    
+
+    # GNB Iteration 1: Alter the prior probabilities
+    print("\n--------------------Gaussian Naive Bayes Iteration 1--------------------\n")
+    gaussian.iteration1()
+
+    # GNB Iteration 2: Modify the input variables
+    print("\n--------------------Gaussian Naive Bayes Iteration 2--------------------\n")
+    gaussian.iteration2()
+
+    # GNB Iteration 3
+    print("\n--------------------Gaussian Naive Bayes Iteration 3--------------------\n")
+    gaussian.iteration3(X_train, y_train, X_test, y_test)
 
 if __name__ == "__main__":
     main()
