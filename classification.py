@@ -1,3 +1,9 @@
+"""
+CS6140 Project 3
+Yihan Xu
+Jake Van Meter
+"""
+
 from classifier import *
 from utils import *
 from consts import *

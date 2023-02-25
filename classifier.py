@@ -1,6 +1,9 @@
-from __future__ import annotations
+"""
+CS6140 Project 3
+Jake Van Meter
+Yihan Xu
+"""
 
-import math
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
