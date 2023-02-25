@@ -18,6 +18,8 @@ def main():
     y_train = open_csv_as_df(Y_TRAIN_CSV_PATH)
     X_test = open_csv_as_df(X_TEST_CSV_PATH)
     y_test = open_csv_as_df(Y_TEST_CSV_PATH)
+    X_train_no_drop = open_csv_as_df(X_TRAIN_NO_DROP_CSV_PATH)
+    X_test_no_drop = open_csv_as_df(X_TEST_NO_DROP_CSV_PATH)
 
     # SVM classifier
     svmcl = svm.SVC(probability=True)
@@ -33,6 +35,21 @@ def main():
     knn = KNeighborsClassifier(n_neighbors=10)
     knn_classifier = ClassifierModel(knn)
     train_and_predict(knn_classifier, X_train, y_train, X_test, y_test, "K Nearest neighbors")
+
+    # SVM classifier iteration 1
+    svmcl = svm.SVC(probability=True, C=2.0)
+    svm_classifier = ClassifierModel(svmcl)
+    train_and_predict(svm_classifier, X_train, y_train, X_test, y_test, "Support Vector Machine")
+
+    # SVM classifier iteration 2
+    svmcl = svm.SVC(probability=True, kernel='poly')
+    svm_classifier = ClassifierModel(svmcl)
+    train_and_predict(svm_classifier, X_train, y_train, X_test, y_test, "Support Vector Machine")
+
+    # SVM classifier iteration 3
+    svmcl = svm.SVC(probability=True)
+    svm_classifier = ClassifierModel(svmcl)
+    train_and_predict(svm_classifier, X_train_no_drop, y_train, X_test_no_drop, y_test, "Support Vector Machine")
 
 
 if __name__ == "__main__":

@@ -226,6 +226,10 @@ def main():
     # trn_df.to_csv(FRMT_TRN_CSV_PATH, index=False)
     # tst_df.to_csv(FRMT_TST_CSV_PATH, index=False)
 
+    # Write formatted data frames to new CSVs
+    X_train.to_csv(X_TRAIN_NO_DROP_CSV_PATH, index=False)
+    X_test.to_csv(X_TEST_NO_DROP_CSV_PATH, index=False)
+
     # we need to drop the insignificant features before saving for later use
     X_train.drop(['RestingBP', 'Normal', 'ST'], inplace=True, axis=1)
     X_test.drop(['RestingBP', 'Normal', 'ST'], inplace=True, axis=1)

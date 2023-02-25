@@ -14,6 +14,8 @@ X_TRAIN_CSV_PATH = "./data/X_train.csv"
 Y_TRAIN_CSV_PATH = "./data/y_train.csv"
 X_TEST_CSV_PATH = "./data/X_test.csv"
 Y_TEST_CSV_PATH = "./data/y_test.csv"
+X_TRAIN_NO_DROP_CSV_PATH = "./data/X_train_no_drop.csv"
+X_TEST_NO_DROP_CSV_PATH = "./data/X_test_no_drop.csv"
 
 IND_FEATURES = [
     "Age",              # Numeric
