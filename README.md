@@ -14,6 +14,7 @@
 - The training and evaluation logic is wrapped in a Classifier class in classifier.py.
 - All datasets are in data folder.
 - All images are in images folder.
+- Report is in the `report` directory.
 
 ## Instructions for Running
 Instructions for running from CLI: python `<path/to/assignment2>/main.py <desired_task>`
